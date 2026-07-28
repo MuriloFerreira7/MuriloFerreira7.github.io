@@ -99,27 +99,18 @@ body::after {
 }
 
 /* selo com iniciais, como retrato do topo */
-.links::before {
-  content: "MF";
+.selo {
   width: 76px;
   height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 22px;
-  letter-spacing: 0.02em;
-  color: var(--ink);
-  background: conic-gradient(from 180deg, var(--violet), var(--rose), var(--gold), var(--teal), var(--violet));
+  object-fit: cover;
   box-shadow: 0 0 0 4px var(--ink), 0 8px 30px rgba(139, 92, 246, 0.35);
   margin-bottom: 6px;
 }
 
 /* nome e subtítulo, logo abaixo do selo */
 .links::after {
-  content: "Murilo Ferreira — Dev Júnior";
+  content: "Zaano tour viagens - agência de viagens";
   font-family: var(--display);
   font-weight: 600;
   font-size: 16px;
@@ -169,15 +160,18 @@ body::after {
   outline-offset: 3px;
 }
 
-/* brilho colorido de cada rede, no hover */
-.card:nth-child(1) { border-color: rgba(251, 113, 133, 0.35); }
-.card:nth-child(1):hover { box-shadow: 0 10px 30px rgba(251, 113, 133, 0.25); }
+/* brilho colorido de cada rede, no hover — cicla a cada 4 cards */
+.card:nth-child(4n+1) { border-color: rgba(251, 113, 133, 0.35); }
+.card:nth-child(4n+1):hover { box-shadow: 0 10px 30px rgba(251, 113, 133, 0.25); }
 
-.card:nth-child(2) { border-color: rgba(45, 212, 191, 0.35); }
-.card:nth-child(2):hover { box-shadow: 0 10px 30px rgba(45, 212, 191, 0.25); }
+.card:nth-child(4n+2) { border-color: rgba(45, 212, 191, 0.35); }
+.card:nth-child(4n+2):hover { box-shadow: 0 10px 30px rgba(45, 212, 191, 0.25); }
 
-.card:nth-child(3) { border-color: rgba(139, 92, 246, 0.35); }
-.card:nth-child(3):hover { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.25); }
+.card:nth-child(4n+3) { border-color: rgba(139, 92, 246, 0.35); }
+.card:nth-child(4n+3):hover { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.25); }
+
+.card:nth-child(4n+4) { border-color: rgba(251, 191, 36, 0.35); }
+.card:nth-child(4n+4):hover { box-shadow: 0 10px 30px rgba(251, 191, 36, 0.25); }
 
 .icone {
   width: 46px;
