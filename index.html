@@ -1,104 +1,2733 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaano Tour Viagens</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0D1F3C">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Zaano Viaja — Clube de Crédito de Viagens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* =========================================================================
+   ZAANO VIAJA — DESIGN TOKENS
+   ========================================================================= */
+        :root {
+            --navy-deep: #08152B;
+            --navy: #0D1F3C;
+            --navy-card: #132646;
+            --navy-card-2: #1A3358;
+            --navy-elev: #1E3C67;
+            --gold: #C9A227;
+            --gold-light: #E8C766;
+            --gold-dim: #8A7226;
+            --ink: #F5F3EE;
+            --ink-muted: #9FB0C8;
+            --ink-faint: #5E7291;
+            --line: #22385C;
+            --line-soft: #1A2C4A;
+            --good: #4FBF8B;
+            --good-bg: rgba(79, 191, 139, 0.14);
+            --bad: #E08A73;
+            --bad-bg: rgba(224, 138, 115, 0.14);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+        }
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+        * {
+            box-sizing: border-box;
+        }
 
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: radial-gradient(120% 60% at 50% 0%, #17325C 0%, var(--navy) 45%, var(--navy-deep) 100%);
+            background-attachment: fixed;
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .display {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .tabular {
+            font-variant-numeric: tabular-nums;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: var(--navy-deep);
+        }
+
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .icon-sm {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* =========================================================================
+   APP SHELL
+   ========================================================================= */
+        #app-shell {
+            max-width: 440px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.35);
+        }
+
+        #view-root {
+            flex: 1;
+            padding-bottom: 18px;
+        }
+
+        #view-root.pad-tabbar {
+            padding-bottom: 100px;
+        }
+
+        .fade-in {
+            animation: fadeIn .38s cubic-bezier(.2, .7, .3, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================================================================
+   TOPBAR
+   ========================================================================= */
+        #topbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 16px 18px;
+            background: rgba(8, 21, 43, 0.82);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--line-soft);
+        }
+
+        .tb-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .tb-back {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ink-muted);
+            flex-shrink: 0;
+        }
+
+        .tb-title {
+            font-family: 'Outfit';
+            font-weight: 600;
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tb-eyebrow {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.05em;
+        }
+
+        .tb-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .tb-icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ink-muted);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tb-icon-btn .dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold-light);
+            box-shadow: 0 0 0 2px rgba(8, 21, 43, 0.9);
+        }
+
+        .tb-login-btn {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold-light);
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: 'Outfit';
+        }
+
+        .z-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(155deg, #2a3f63 0%, #142A4D 40%, #0A1729 100%);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), inset 0 -4px 8px rgba(0, 0, 0, 0.45), 0 6px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        .z-mark span {
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 17px;
+            background: linear-gradient(180deg, #F5E6B0 0%, var(--gold-light) 35%, var(--gold) 60%, var(--gold-dim) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .z-mark-lg {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+        }
+
+        .z-mark-lg span {
+            font-size: 28px;
+        }
+
+        /* =========================================================================
+   TYPE / SECTION HELPERS
+   ========================================================================= */
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 12px;
+        }
+
+        .link-sm {
+            font-size: 12px;
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .muted {
+            color: var(--ink-muted);
+        }
+
+        .faint {
+            color: var(--ink-faint);
+        }
+
+        /* =========================================================================
+   BUTTONS
+   ========================================================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Outfit';
+            font-weight: 700;
+            border-radius: 14px;
+            transition: transform .12s ease, opacity .12s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(180deg, var(--gold-light), var(--gold));
+            color: var(--navy-deep);
+            font-size: 15px;
+            box-shadow: 0 10px 24px rgba(201, 162, 39, 0.28);
+        }
+
+        .btn-primary-sm {
+            padding: 10px 16px;
+            background: linear-gradient(180deg, var(--gold-light), var(--gold));
+            color: var(--navy-deep);
+            font-size: 12.5px;
+            border-radius: 11px;
+        }
+
+        .btn-ghost {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--line);
+            font-size: 13.5px;
+        }
+
+        .btn-ghost-sm {
+            padding: 9px 14px;
+            background: transparent;
+            color: var(--ink-muted);
+            border: 1px solid var(--line);
+            font-size: 12px;
+            border-radius: 11px;
+        }
+
+        .btn-danger-sm {
+            padding: 9px 14px;
+            background: var(--bad-bg);
+            color: var(--bad);
+            border: 1px solid rgba(224, 138, 115, 0.35);
+            font-size: 12px;
+            border-radius: 11px;
+        }
+
+        .btn-block-row {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* =========================================================================
+   CARDS / LISTS
+   ========================================================================= */
+        .card {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: var(--navy-card);
+            padding: 16px;
+        }
+
+        .card-grad {
+            background: linear-gradient(160deg, var(--navy-card) 0%, var(--navy) 100%);
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--line-soft);
+            margin: 14px 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--ink-faint);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .empty-state .icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 10px;
+            opacity: 0.6;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-ok {
+            background: var(--good-bg);
+            color: var(--good);
+        }
+
+        .badge-late {
+            background: var(--bad-bg);
+            color: var(--bad);
+        }
+
+        .badge-gold {
+            background: rgba(201, 162, 39, 0.16);
+            color: var(--gold-light);
+        }
+
+        .badge-muted {
+            background: rgba(159, 176, 200, 0.1);
+            color: var(--ink-muted);
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--navy-deep);
+            background: linear-gradient(160deg, var(--gold-light), var(--gold-dim));
+        }
+
+        /* =========================================================================
+   FORMS
+   ========================================================================= */
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--navy-card-2);
+            color: var(--ink);
+            font-size: 14px;
+            font-family: 'Inter';
+            outline: none;
+            transition: border-color .15s;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: var(--ink-faint);
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--gold-dim);
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .field-hint {
+            font-size: 11px;
+            color: var(--ink-faint);
+            margin-top: 5px;
+        }
+
+        .segmented {
+            display: flex;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 3px;
+            gap: 3px;
+            margin-bottom: 18px;
+        }
+
+        .segmented button {
+            flex: 1;
+            padding: 10px 8px;
+            border: none;
+            background: transparent;
+            color: var(--ink-faint);
+            font-family: 'Outfit';
+            font-weight: 600;
+            font-size: 12.5px;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .segmented button.active {
+            background: var(--navy-elev);
+            color: var(--gold-light);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--navy-card-2);
+            margin: 0 20px 14px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: var(--ink);
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .search-bar .icon {
+            color: var(--ink-faint);
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            padding: 0 20px 14px;
+            overflow-x: auto;
+        }
+
+        .chip {
+            padding: 7px 13px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--ink-faint);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .chip.active {
+            border-color: var(--gold-dim);
+            color: var(--gold-light);
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* =========================================================================
+   MODAL / SHEET / TOAST
+   ========================================================================= */
+        #modal-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        #modal-layer.open {
+            display: flex;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(4, 10, 22, 0.65);
+            backdrop-filter: blur(3px);
+            animation: fadeIn .2s;
+        }
+
+        .modal-sheet {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            background: var(--navy);
+            border-top: 1px solid var(--line);
+            border-radius: 22px 22px 0 0;
+            padding: 10px 20px 26px;
+            max-height: 86vh;
+            overflow-y: auto;
+            animation: sheetUp .28s cubic-bezier(.2, .8, .3, 1);
+            box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        @keyframes sheetUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .sheet-handle {
+            width: 36px;
+            height: 4px;
+            border-radius: 99px;
+            background: var(--line);
+            margin: 6px auto 16px;
+        }
+
+        .sheet-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .sheet-title {
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .sheet-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ink-muted);
+            cursor: pointer;
+        }
+
+        #toast-container {
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 16px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 16px;
+            border-radius: 13px;
+            background: #102544;
+            border: 1px solid var(--line);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            font-size: 13px;
+            font-weight: 600;
+            animation: toastIn .25s ease;
+        }
+
+        .toast.ok {
+            border-color: rgba(79, 191, 139, 0.4);
+        }
+
+        .toast .icon {
+            color: var(--good);
+            flex-shrink: 0;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .toast.leaving {
+            animation: toastOut .25s ease forwards;
+        }
+
+        @keyframes toastOut {
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* =========================================================================
+   BOTTOM TABBAR
+   ========================================================================= */
+        #tabbar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            justify-content: space-around;
+            background: rgba(8, 17, 35, 0.92);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--line-soft);
+            padding: 10px 6px calc(14px + env(safe-area-inset-bottom));
+        }
+
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: var(--ink-faint);
+            font-weight: 600;
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tab.on {
+            color: var(--gold-light);
+        }
+
+        .tab .dot {
+            position: absolute;
+            top: -2px;
+            right: calc(50% - 15px);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold-light);
+        }
+
+        /* =========================================================================
+   PUBLIC — LANDING
+   ========================================================================= */
+        .hero {
+            padding: 30px 22px 6px;
+        }
+
+        .headline {
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 29px;
+            line-height: 1.2;
+            margin: 16px 0 10px;
+        }
+
+        .headline em {
+            font-style: normal;
+            color: var(--gold-light);
+        }
+
+        .lede {
+            color: var(--ink-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 22px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hero-actions .btn-primary {
+            width: auto;
+            flex: 1;
+            padding: 14px;
+        }
+
+        .hero-actions .btn-ghost {
+            width: auto;
+            flex: 1;
+            padding: 12px;
+        }
+
+        .plans-wrap {
+            padding: 6px 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .plan-card {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            background: linear-gradient(160deg, var(--navy-card) 0%, var(--navy) 100%);
+            padding: 19px 19px 17px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card.feat {
+            border-color: var(--gold-dim);
+            box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.22), 0 16px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--navy-deep);
+            background: var(--gold-light);
+            padding: 3px 9px;
+            border-radius: 999px;
+        }
+
+        .plan-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .plan-name {
+            font-family: 'Outfit';
+            font-weight: 600;
+            font-size: 16.5px;
+        }
+
+        .plan-audience {
+            font-size: 11px;
+            color: var(--ink-faint);
+        }
+
+        .plan-price {
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 23px;
+            margin-top: 8px;
+        }
+
+        .plan-price small {
+            font-size: 12px;
+            color: var(--ink-muted);
+            font-weight: 500;
+        }
+
+        .plan-bonus {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 10px 0 14px;
+            font-size: 12.5px;
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .dot-gold {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gold-light);
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .plan-actions .btn-primary-sm {
+            flex: 1;
+        }
+
+        .plan-actions .btn-ghost-sm {
+            flex: 1;
+        }
+
+        .how-it-works {
+            padding: 30px 20px 6px;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .step {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 11.5px;
+            color: var(--gold-light);
+            border: 1px solid var(--gold-dim);
+        }
+
+        .step-txt {
+            font-size: 13.5px;
+            color: var(--ink-muted);
+            line-height: 1.55;
+            padding-top: 3px;
+        }
+
+        .step-txt b {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .cta-final {
+            margin: 30px 20px 6px;
+            padding: 22px 20px;
+            border-radius: 20px;
+            text-align: center;
+            background: linear-gradient(160deg, #1A3358 0%, #0D1F3C 70%);
+            border: 1px solid var(--line);
+        }
+
+        .cta-final .display {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .cta-final p {
+            font-size: 12.5px;
+            color: var(--ink-muted);
+            margin: 0 0 16px;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 24px 22px 4px;
+            font-size: 12px;
+            color: var(--ink-faint);
+        }
+
+        .contact-row a {
+            color: var(--ink-muted);
+            font-weight: 600;
+        }
+
+        .contact-sep {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--ink-faint);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            padding: 16px 30px 30px;
+            line-height: 1.7;
+        }
+
+        /* =========================================================================
+   SIGNUP / LOGIN
+   ========================================================================= */
+        .auth-wrap {
+            padding: 24px 24px 10px;
+        }
+
+        .auth-head {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        .auth-head .z-mark-lg {
+            margin: 0 auto 14px;
+        }
+
+        .auth-head h1 {
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 20px;
+            margin: 0 0 4px;
+        }
+
+        .auth-head p {
+            font-size: 12.5px;
+            color: var(--ink-faint);
+            margin: 0;
+        }
+
+        .plan-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--gold-dim);
+            background: rgba(201, 162, 39, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .plan-summary b {
+            font-family: 'Outfit';
+            display: block;
+            font-size: 14.5px;
+        }
+
+        .plan-summary span {
+            font-size: 11.5px;
+            color: var(--ink-faint);
+        }
+
+        .confirm-wrap {
+            padding: 60px 30px 30px;
+            text-align: center;
+        }
+
+        .confirm-icon {
+            width: 74px;
+            height: 74px;
+            margin: 0 auto 22px;
+            border-radius: 20px;
+            background: var(--good-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-icon .icon {
+            width: 36px;
+            height: 36px;
+            color: var(--good);
+        }
+
+        .confirm-wrap h1 {
+            font-family: 'Outfit';
+            font-size: 20px;
+            margin: 0 0 10px;
+        }
+
+        .confirm-wrap p {
+            font-size: 13px;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            margin: 0 0 26px;
+        }
+
+        /* =========================================================================
+   CLIENT DASHBOARD
+   ========================================================================= */
+        .greet-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .greet-hi {
+            font-size: 11px;
+            color: var(--ink-faint);
+        }
+
+        .greet-name {
+            font-family: 'Outfit';
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .ring-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 22px 4px;
+        }
+
+        .ring {
+            width: 212px;
+            height: 212px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ring svg {
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 6px 16px rgba(201, 162, 39, 0.15));
+        }
+
+        .ring-center {
+            position: absolute;
+            text-align: center;
+        }
+
+        .ring-label {
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+        }
+
+        .ring-value {
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 29px;
+            margin: 3px 0;
+        }
+
+        .ring-sub {
+            font-size: 11.5px;
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .plan-pill {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin: 14px 22px 0;
+            padding: 9px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--gold-dim);
+            font-size: 12px;
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px 4px;
+        }
+
+        .stat-card {
+            flex: 1;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 13px 14px;
+            background: var(--navy-card);
+        }
+
+        .stat-k {
+            font-size: 10px;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .stat-v {
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        .cta-travel {
+            margin: 18px 20px 4px;
+            padding: 16px 18px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1A3358, #0D1F3C);
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .cta-travel div b {
+            display: block;
+            font-family: 'Outfit';
+            font-size: 14.5px;
+            font-weight: 700;
+        }
+
+        .cta-travel div span {
+            font-size: 11px;
+            color: var(--ink-muted);
+        }
+
+        .cta-travel .btn-primary-sm {
+            white-space: nowrap;
+        }
+
+        .hist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--line-soft);
+        }
+
+        .hist-item:last-child {
+            border-bottom: none;
+        }
+
+        .hist-left b {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .hist-left span {
+            font-size: 11px;
+            color: var(--ink-faint);
+        }
+
+        .hist-right {
+            text-align: right;
+        }
+
+        .hist-right b {
+            display: block;
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 13.5px;
+            color: var(--good);
+        }
+
+        .hist-right span {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+        }
+
+        .hist-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 20px;
+            margin: 0 20px 6px;
+            border-top: 1px dashed var(--line);
+        }
+
+        .notif-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--line-soft);
+            position: relative;
+        }
+
+        .notif-item.unread {
+            background: rgba(201, 162, 39, 0.045);
+        }
+
+        .notif-item:last-child {
+            border-bottom: none;
+        }
+
+        .notif-ico {
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notif-ico.saldo {
+            background: rgba(79, 191, 139, 0.14);
+            color: var(--good);
+        }
+
+        .notif-ico.credito {
+            background: rgba(201, 162, 39, 0.14);
+            color: var(--gold-light);
+        }
+
+        .notif-ico.oferta {
+            background: rgba(94, 145, 224, 0.14);
+            color: #7FA8E8;
+        }
+
+        .notif-body b {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .notif-body p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+        }
+
+        .notif-body span {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            display: block;
+            margin-top: 5px;
+        }
+
+        .notif-item.unread::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold-light);
+        }
+
+        .profile-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 22px 20px 8px;
+        }
+
+        .profile-head .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            font-size: 18px;
+        }
+
+        .profile-head b {
+            font-family: 'Outfit';
+            font-size: 16.5px;
+            display: block;
+        }
+
+        .profile-head span {
+            font-size: 12px;
+            color: var(--ink-faint);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--line-soft);
+            font-size: 13px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .k {
+            color: var(--ink-faint);
+        }
+
+        .info-row .v {
+            font-weight: 600;
+        }
+
+        .lgpd-note {
+            display: flex;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(159, 176, 200, 0.06);
+            border: 1px solid var(--line-soft);
+            font-size: 11.5px;
+            color: var(--ink-faint);
+            line-height: 1.55;
+            margin: 18px 20px 0;
+        }
+
+        .lgpd-note .icon {
+            color: var(--ink-faint);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .upgrade-plan-row {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .upgrade-card {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px 18px;
+            background: var(--navy-card);
+            cursor: pointer;
+            transition: border-color .15s;
+        }
+
+        .upgrade-card.current {
+            opacity: 0.55;
+        }
+
+        .upgrade-card.selected {
+            border-color: var(--gold);
+            background: rgba(201, 162, 39, 0.07);
+        }
+
+        .upgrade-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upgrade-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--line);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upgrade-radio.on {
+            border-color: var(--gold);
+        }
+
+        .upgrade-radio.on::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        /* =========================================================================
+   ADMIN
+   ========================================================================= */
+        .kpi-row {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px 6px;
+            overflow-x: auto;
+        }
+
+        .kpi {
+            min-width: 126px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 13px 15px;
+            background: var(--navy-card);
+            flex-shrink: 0;
+        }
+
+        .kpi-k {
+            font-size: 9.5px;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .kpi-v {
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 17px;
+            margin-top: 5px;
+        }
+
+        .kpi-v.bad {
+            color: var(--bad);
+        }
+
+        .integrations {
+            margin: 16px 20px 4px;
+            padding: 15px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: var(--navy-card);
+        }
+
+        .integrations-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .integrations-head b {
+            font-family: 'Outfit';
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .integ-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 12px;
+            border-bottom: 1px solid var(--line-soft);
+        }
+
+        .integ-row:last-child {
+            border-bottom: none;
+        }
+
+        .integ-row .k {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink-muted);
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 16px 20px 4px;
+        }
+
+        .quick-card {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 15px;
+            background: linear-gradient(160deg, var(--navy-card) 0%, var(--navy) 100%);
+            cursor: pointer;
+        }
+
+        .quick-card .icon {
+            color: var(--gold-light);
+            margin-bottom: 10px;
+        }
+
+        .quick-card b {
+            display: block;
+            font-family: 'Outfit';
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .quick-card span {
+            font-size: 11px;
+            color: var(--ink-faint);
+        }
+
+        .sub-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 20px;
+            border-bottom: 1px solid var(--line-soft);
+            cursor: pointer;
+        }
+
+        .sub-row:active {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .sub-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sub-info b {
+            display: block;
+            font-family: 'Outfit';
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .sub-info span {
+            font-size: 11px;
+            color: var(--ink-faint);
+        }
+
+        .sub-right {
+            text-align: right;
+        }
+
+        .sub-right b {
+            display: block;
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .list-count {
+            padding: 0 20px 10px;
+            font-size: 11.5px;
+            color: var(--ink-faint);
+        }
+
+        .detail-hero {
+            padding: 22px 20px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .detail-hero .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .detail-hero b {
+            font-family: 'Outfit';
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .detail-hero span {
+            font-size: 12px;
+            color: var(--ink-faint);
+            margin-top: 2px;
+        }
+
+        .detail-balances {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px 4px;
+        }
+
+        .detail-bal-card {
+            flex: 1;
+            text-align: center;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px 10px;
+            background: var(--navy-card);
+        }
+
+        .detail-bal-card .stat-v {
+            font-size: 17px;
+        }
+
+        .offer-item {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 0 20px 10px;
+            background: var(--navy-card);
+        }
+
+        .offer-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .offer-item b {
+            font-family: 'Outfit';
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .offer-item p {
+            margin: 4px 0 8px;
+            font-size: 12px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+        }
+
+        .offer-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+        }
+
+        .chart-card {
+            margin: 6px 20px;
+            padding: 18px 16px 10px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--navy-card);
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--ink-muted);
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        .bars-wrap {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 150px;
+            padding: 0 4px;
+        }
+
+        .bar-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            gap: 6px;
+        }
+
+        .bar-stack {
+            width: 100%;
+            max-width: 34px;
+            display: flex;
+            flex-direction: column-reverse;
+            border-radius: 6px 6px 3px 3px;
+            overflow: hidden;
+        }
+
+        .bar-seg {
+            width: 100%;
+        }
+
+        .bar-month {
+            font-size: 10px;
+            color: var(--ink-faint);
+            font-weight: 600;
+        }
+
+        .report-table {
+            margin: 16px 20px 6px;
+        }
+
+        .report-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line-soft);
+            font-size: 12.5px;
+        }
+
+        .report-row:last-child {
+            border-bottom: none;
+        }
+
+        .report-plan {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .report-plan .legend-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 3px;
+        }
+
+        .report-vals {
+            text-align: right;
+        }
+
+        .report-vals b {
+            display: block;
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .report-vals span {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+        }
+
+        .late-item {
+            border: 1px solid rgba(224, 138, 115, 0.3);
+            border-radius: 16px;
+            padding: 15px 16px;
+            margin: 0 20px 10px;
+            background: rgba(224, 138, 115, 0.045);
+        }
+
+        .late-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .late-top b {
+            font-family: 'Outfit';
+            font-size: 14px;
+            font-weight: 600;
+            display: block;
+        }
+
+        .late-top span {
+            font-size: 11px;
+            color: var(--ink-faint);
+        }
+
+        .late-days {
+            text-align: right;
+        }
+
+        .late-days b {
+            color: var(--bad);
+            font-family: 'Outfit';
+            font-size: 15px;
+        }
+
+        .late-days span {
+            font-size: 9.5px;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="links" id="inicio">
-
-        <img src="img/zaano icon.jpeg" alt="zaano logo" class="selo">
-
-        <a href="https://app.onertravel.com/zaanotour/home?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAdGRleATN6O5wZG9mAmV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzEyNDAyNDU3NDI4NzQxNAABpxIDRmbPThtB5eipl8vsIinsRSPO3aHTQGKEwY4M-D2jfh062pSlbNoG6eE-_aem_EDwNNfAmomAGJBdSWUB7Gg"
-            class="card">
-            <img src="img/site icon.png" alt="site icon" class="icone">
-            <div class="conteudo">
-                <h3>Acesse Zaanotour</h3>
-                <p>conheça nosso sites</p>
-            </div>
-        </a>
-
-        <a href="https://wa.me/message/CCKOPLDPFCYWM1" class="card">
-            <img src="img/whatsapp icon.jpg" alt="whatsapp Icon" class="icone">
-            <div class="conteudo">
-                <h3>WhatsApp</h3>
-                <p>Entre em contato</p>
-            </div>
-        </a>
-
-        <a href="https://chat.whatsapp.com/Bg75UGlVXdy2I2eY4DGhUS?s=cl&p=i&mlu=0" class="card">
-            <img src="img/grupo icon.png" alt="group icon" class="icone">
-            <div class="conteudo">
-                <h3>Grupo de ofertas</h3>
-                <p>Entre no nosso grupo do whatsapp </p>
-            </div>
-        </a>
-
-
-        <a href="https://www.instagram.com/zaanoviagens?igsh=MWJvNXU2bjh3dGgyaQ%3D%3D&utm_source=qr" class="card">
-            <img src="img/instagram icon.png" alt="Instagram Icon" class="icone">
-            <div class="conteudo">
-                <h3>@Zaanoviagens</h3>
-                <p>Siga-nos no instagram</p>
-            </div>
-        </a>
-
-        <a href="https://www.facebook.com/share/18ZBUssao2/?mibextid=wwXIfr" class="card">
-            <img src="img/facebook icon.png" alt="facebook icon" class="icone">
-            <div class="conteudo">
-                <h3>@Zaano Tour Viagens</h3>
-                <p>Nos acompanhe no facebook</p>
-            </div>
-        </a>
-
-        <a href="https://g.page/r/CQhop4ObD2FLEBM/review" class="card">
-            <img src="img/google icon.png" alt="google icon" class="icone">
-            <div class="conteudo">
-                <h3>Avalie-nos no google</h3>
-                <p>nos encontre e deixe sua avaliação</p>
-            </div>
-        </a>
+    <div id="app-shell">
+        <div id="topbar"></div>
+        <div id="view-root"></div>
+        <div id="tabbar"></div>
     </div>
 
+    <div id="modal-layer">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-sheet" id="modal-sheet"></div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        /* =========================================================================
+           ZAANO VIAJA — MOCK DATA LAYER
+           Tudo neste bloco representa dados que, na versão final, virão de uma API.
+           As funções de acesso (getPlans, getClient, getSubscribers, etc.) já
+           isolam essa fonte — trocar o mock por fetch() reais não deve exigir
+           mudanças nas telas.
+           ========================================================================= */
+
+        const PLANS = [
+            { id: 'explorador', name: 'Explorador', price: 300, bonusPct: 5, audience: 'Iniciante' },
+            { id: 'viajante', name: 'Viajante', price: 500, bonusPct: 8, audience: 'Frequente', featured: true },
+            { id: 'globetrotter', name: 'Globetrotter', price: 800, bonusPct: 12, audience: 'Premium' },
+        ];
+        const PLAN_COLOR = { explorador: '#7FA8E8', viajante: '#E8C766', globetrotter: '#4FBF8B' };
+
+        let CLIENT = {
+            id: 1,
+            name: 'Camila Duarte',
+            email: 'camila.duarte@email.com',
+            whatsapp: '(45) 99999-1234',
+            planId: 'viajante',
+            since: 'jan/2025',
+            renewalDate: '14/08/2026',
+            balance: 4320,
+            bonusTotal: 320,
+            history: [
+                { id: 1, label: 'Mensalidade · Julho', date: '14/07/2026', amount: 500, bonus: 40 },
+                { id: 2, label: 'Mensalidade · Junho', date: '14/06/2026', amount: 500, bonus: 40 },
+                { id: 3, label: 'Mensalidade · Maio', date: '14/05/2026', amount: 500, bonus: 40 },
+                { id: 4, label: 'Mensalidade · Abril', date: '14/04/2026', amount: 500, bonus: 40 },
+                { id: 5, label: 'Mensalidade · Março', date: '14/03/2026', amount: 500, bonus: 40 },
+                { id: 6, label: 'Mensalidade · Fevereiro', date: '14/02/2026', amount: 500, bonus: 40 },
+            ],
+            notifications: [
+                { id: 1, type: 'saldo', title: 'Seu saldo cresceu!', body: 'Você já acumulou R$ 4.320 em crédito Zaano Viaja.', date: '28/07/2026', read: true },
+                { id: 2, type: 'credito', title: 'Pagamento confirmado', body: 'Recebemos sua mensalidade de julho. Bônus de R$ 40 já está disponível no seu saldo.', date: '14/07/2026', read: true },
+                { id: 3, type: 'oferta', title: 'Nova oferta: Bariloche', body: 'Pacotes para Bariloche com condições especiais para assinantes Viajante e Globetrotter.', date: '02/07/2026', read: false },
+                { id: 4, type: 'oferta', title: 'Última chamada: Fernando de Noronha', body: 'Vagas limitadas para o pacote de setembro. Fale com a Zaano Tour.', date: '20/06/2026', read: false },
+                { id: 5, type: 'credito', title: 'Pagamento confirmado', body: 'Recebemos sua mensalidade de junho. Bônus de R$ 40 já está disponível no seu saldo.', date: '14/06/2026', read: true },
+            ],
+        };
+
+        let SUBSCRIBERS = [
+            { id: 1, name: 'Camila Duarte', email: 'camila.duarte@email.com', planId: 'viajante', since: 'jan/2025', status: 'ok', balance: 4320, bonusTotal: 320, lastPayment: '14/07/2026' },
+            { id: 2, name: 'Rafael Monteiro', email: 'rafael.monteiro@email.com', planId: 'globetrotter', since: 'mar/2024', status: 'ok', balance: 11040, bonusTotal: 1180, lastPayment: '11/07/2026' },
+            { id: 3, name: 'Bianca Ferreira', email: 'bianca.ferreira@email.com', planId: 'explorador', since: 'jun/2025', status: 'late', balance: 890, bonusTotal: 40, lastPayment: '20/06/2026', daysLate: 12 },
+            { id: 4, name: 'Henrique Alves', email: 'henrique.alves@email.com', planId: 'viajante', since: 'fev/2025', status: 'ok', balance: 5680, bonusTotal: 420, lastPayment: '09/07/2026' },
+            { id: 5, name: 'Larissa Prado', email: 'larissa.prado@email.com', planId: 'globetrotter', since: 'set/2023', status: 'ok', balance: 18200, bonusTotal: 1960, lastPayment: '05/07/2026' },
+            { id: 6, name: 'Diego Martins', email: 'diego.martins@email.com', planId: 'explorador', since: 'nov/2025', status: 'ok', balance: 610, bonusTotal: 30, lastPayment: '15/07/2026' },
+            { id: 7, name: 'Fernanda Ribas', email: 'fernanda.ribas@email.com', planId: 'viajante', since: 'ago/2025', status: 'late', balance: 2100, bonusTotal: 160, lastPayment: '25/06/2026', daysLate: 5 },
+            { id: 8, name: 'Thiago Souza', email: 'thiago.souza@email.com', planId: 'explorador', since: 'jul/2025', status: 'ok', balance: 780, bonusTotal: 35, lastPayment: '13/07/2026' },
+            { id: 9, name: 'Patrícia Nunes', email: 'patricia.nunes@email.com', planId: 'globetrotter', since: 'jan/2024', status: 'ok', balance: 14320, bonusTotal: 1540, lastPayment: '08/07/2026' },
+            { id: 10, name: 'Eduardo Lima', email: 'eduardo.lima@email.com', planId: 'viajante', since: 'mai/2025', status: 'ok', balance: 3480, bonusTotal: 260, lastPayment: '17/07/2026' },
+            { id: 11, name: 'Juliana Castro', email: 'juliana.castro@email.com', planId: 'explorador', since: 'abr/2025', status: 'late', balance: 420, bonusTotal: 20, lastPayment: '02/06/2026', daysLate: 20 },
+            { id: 12, name: 'Marcos Vinícius', email: 'marcos.vinicius@email.com', planId: 'globetrotter', since: 'dez/2024', status: 'ok', balance: 9560, bonusTotal: 1020, lastPayment: '19/07/2026' },
+        ];
+
+        let OFFERS = [
+            { id: 1, title: 'Bariloche no inverno', body: 'Pacotes com condições especiais para assinantes Viajante e Globetrotter, com assessoria completa da Zaano Tour.', audience: 'Viajante e Globetrotter', date: '02/07/2026', reach: 8 },
+            { id: 2, title: 'Fernando de Noronha — vagas limitadas', body: 'Últimas vagas para o pacote de setembro. Chamada especial para todo o clube.', audience: 'Todos os assinantes', date: '20/06/2026', reach: 12 },
+        ];
+
+        const REVENUE_HISTORY = {
+            months: ['Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+            totals: [5100, 5400, 5800, 6000, 6200, 6400],
+        };
+        const PLAN_MIX = { explorador: 0.1875, viajante: 0.3125, globetrotter: 0.5 };
+
+        /* ---- Funções de acesso aos dados (trocar o corpo por chamadas de API) ---- */
+        function getPlans() { return PLANS; }
+        function getPlan(id) { return PLANS.find(p => p.id === id); }
+        function getClient() { return CLIENT; }
+        function getSubscribers() { return SUBSCRIBERS; }
+        function getSubscriber(id) { return SUBSCRIBERS.find(s => s.id === Number(id)); }
+        function getOffers() { return OFFERS; }
+
+        function adminKPIs() {
+            const active = SUBSCRIBERS.length;
+            const monthlyRevenue = SUBSCRIBERS.reduce((sum, s) => sum + getPlan(s.planId).price, 0);
+            const totalBalance = SUBSCRIBERS.reduce((sum, s) => sum + s.balance, 0);
+            const late = SUBSCRIBERS.filter(s => s.status === 'late').length;
+            return { active, monthlyRevenue, totalBalance, late };
+        }
+
+        /* =========================================================================
+           ESTADO GLOBAL
+           ========================================================================= */
+        let STATE = {
+            session: null,       // { role: 'client' | 'admin' }
+            loginRole: 'client',
+            subFilter: 'todos',
+            subSearch: '',
+        };
+
+        /* =========================================================================
+           UTILITÁRIOS
+           ========================================================================= */
+        function fmtBRL(n) {
+            return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+        }
+        function initials(name) {
+            return name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+        function whatsappLink(msg) {
+            return 'https://wa.me/5545999999999?text=' + encodeURIComponent(msg);
+        }
+        function toast(msg) {
+            const el = document.createElement('div');
+            el.className = 'toast ok';
+            el.innerHTML = icon('check') + '<span>' + msg + '</span>';
+            document.getElementById('toast-container').appendChild(el);
+            setTimeout(() => { el.classList.add('leaving'); setTimeout(() => el.remove(), 250); }, 2600);
+        }
+        function openModal(title, bodyHTML) {
+            document.getElementById('modal-sheet').innerHTML =
+                '<div class="sheet-handle"></div>' +
+                '<div class="sheet-head"><div class="sheet-title">' + title + '</div>' +
+                '<div class="sheet-close" onclick="closeModal()">' + icon('back', 18) + '</div></div>' +
+                bodyHTML;
+            document.getElementById('modal-layer').classList.add('open');
+        }
+        function closeModal() { document.getElementById('modal-layer').classList.remove('open'); }
+
+        /* =========================================================================
+           ÍCONES (SVG inline, minimalistas)
+           ========================================================================= */
+        const ICON_PATHS = {
+            home: '<path d="M4 11 12 4l8 7"/><path d="M6 10v9h4.5v-5.5h3V19H18v-9"/>',
+            history: '<circle cx="12" cy="12" r="8.2"/><path d="M12 7.8v4.6l3.2 2"/>',
+            bell: '<path d="M6.2 9.2a5.8 5.8 0 0 1 11.6 0c0 4.8 1.8 6 1.8 6H4.4s1.8-1.2 1.8-6Z"/><path d="M9.8 19.4a2.3 2.3 0 0 0 4.4 0"/>',
+            user: '<circle cx="12" cy="8.2" r="3.4"/><path d="M5 19.6c1.1-4 3.8-6 7-6s5.9 2 7 6"/>',
+            grid: '<rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/>',
+            users: '<circle cx="8.7" cy="8.3" r="3"/><path d="M3 19c.8-3.5 3-5.2 5.7-5.2s4.9 1.7 5.7 5.2"/><circle cx="16.8" cy="9" r="2.3"/><path d="M15.2 13.9c2.3.3 3.8 1.8 4.4 4.3"/>',
+            megaphone: '<path d="M4 9.5v5h3l7.5 4V5.5L7 9.5H4Z"/><path d="M17.3 8.4a3.6 3.6 0 0 1 0 7.2"/>',
+            chart: '<rect x="4" y="12.5" width="3.6" height="7.5" rx="0.8"/><rect x="10.2" y="7.5" width="3.6" height="12.5" rx="0.8"/><rect x="16.4" y="3.5" width="3.6" height="16.5" rx="0.8"/>',
+            alert: '<path d="M12 3.8 2.6 20.2h18.8L12 3.8Z"/><path d="M12 10v4"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/>',
+            back: '<path d="M15 5 8 12l7 7"/>',
+            plus: '<path d="M12 5v14M5 12h14"/>',
+            whatsapp: '<path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.6-1.2A8.8 8.8 0 1 0 12 3.2Z"/><path d="M8.3 9.3c.3 3.1 2.6 5.4 5.7 5.7"/>',
+            check: '<path d="M4.5 12.5 9 17l10.5-11"/>',
+            search: '<circle cx="10.4" cy="10.4" r="6.4"/><path d="M19.6 19.6 15.3 15.3"/>',
+            logout: '<path d="M9 4.5H5v15h4"/><path d="M15 8l4 4-4 4"/><path d="M19 12H9"/>',
+            chevron: '<path d="M9 6l6 6-6 6"/>',
+            compass: '<circle cx="12" cy="12" r="8.5"/><path d="M15 9l-2 6-4-2 2-6 4 2Z"/>',
+            wallet: '<rect x="3.5" y="6.5" width="17" height="12" rx="2.4"/><path d="M16 12.3h3"/><path d="M3.5 9.5h17"/>',
+            gift: '<rect x="4" y="9.5" width="16" height="10" rx="1.6"/><path d="M4 13h16"/><path d="M12 9.5V20"/><path d="M12 9.5c-1-3-4.4-3.4-4.4-1.1C7.6 9.9 9.6 9.5 12 9.5Z"/><path d="M12 9.5c1-3 4.4-3.4 4.4-1.1 0 1.5-2 1.1-4.4 1.1Z"/>',
+            shield: '<path d="M12 3.4 5 6v6c0 4.6 3 7.6 7 8.6 4-1 7-4 7-8.6V6l-7-2.6Z"/><path d="M9 12l2 2 4-4.4"/>',
+        };
+        function icon(name, size, cls) {
+            size = size || 20;
+            return '<svg class="icon ' + (cls || '') + '" style="width:' + size + 'px;height:' + size + 'px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + (ICON_PATHS[name] || '') + '</svg>';
+        }
+
+        /* =========================================================================
+           ROTEADOR
+           ========================================================================= */
+        function navigate(hash) { location.hash = hash; }
+
+        function render() {
+            let path = (location.hash || '#/').slice(1);
+            if (path === '') path = '/';
+            const segs = path.split('/').filter(Boolean);
+
+            if (segs[0] === 'cliente' && (!STATE.session || STATE.session.role !== 'client')) { location.hash = '#/login'; return; }
+            if (segs[0] === 'admin' && (!STATE.session || STATE.session.role !== 'admin')) { location.hash = '#/login'; return; }
+
+            let html = '';
+            let tab = null;
+            let topCtx = { mode: 'public' };
+            const root = document.getElementById('view-root');
+            root.classList.remove('pad-tabbar');
+
+            if (segs.length === 0) {
+                html = viewLanding();
+                topCtx = { mode: 'public' };
+            } else if (segs[0] === 'assinar') {
+                if (segs[1] === 'confirmacao') { html = viewSignupConfirm(); topCtx = { mode: 'blank', title: 'Assinatura' }; }
+                else { html = viewSignup(segs[1]); topCtx = { mode: 'blank', title: 'Assinar plano', back: '#/' }; }
+            } else if (segs[0] === 'login') {
+                html = viewLogin();
+                topCtx = { mode: 'blank', title: 'Entrar', back: '#/' };
+            } else if (segs[0] === 'cliente') {
+                tab = 'client'; root.classList.add('pad-tabbar');
+                if (segs.length === 1) { html = viewClientDashboard(); topCtx = { mode: 'client-home' }; }
+                else if (segs[1] === 'historico') { html = viewClientHistory(); topCtx = { mode: 'blank', title: 'Histórico de pagamentos', back: '#/cliente' }; }
+                else if (segs[1] === 'upgrade') { html = viewClientUpgrade(); topCtx = { mode: 'blank', title: 'Fazer upgrade', back: '#/cliente' }; }
+                else if (segs[1] === 'notificacoes') { html = viewClientNotifications(); topCtx = { mode: 'blank', title: 'Notificações', back: '#/cliente' }; }
+                else if (segs[1] === 'perfil') { html = viewClientProfile(); topCtx = { mode: 'blank', title: 'Meu perfil', back: '#/cliente' }; }
+                else { html = view404(); topCtx = { mode: 'blank', title: '', back: '#/cliente' }; }
+            } else if (segs[0] === 'admin') {
+                tab = 'admin'; root.classList.add('pad-tabbar');
+                if (segs.length === 1) { html = viewAdminDashboard(); topCtx = { mode: 'admin-home' }; }
+                else if (segs[1] === 'assinantes' && segs.length === 2) { html = viewAdminSubscribers(); topCtx = { mode: 'blank', title: 'Assinantes', back: '#/admin' }; }
+                else if (segs[1] === 'assinantes' && segs[2]) { html = viewAdminSubscriberDetail(segs[2]); topCtx = { mode: 'blank', title: 'Detalhes do assinante', back: '#/admin/assinantes' }; }
+                else if (segs[1] === 'ofertas') { html = viewAdminOffers(); topCtx = { mode: 'blank', title: 'Notificações e ofertas', back: '#/admin' }; }
+                else if (segs[1] === 'relatorio') { html = viewAdminReport(); topCtx = { mode: 'blank', title: 'Relatório de receita', back: '#/admin' }; }
+                else if (segs[1] === 'inadimplencia') { html = viewAdminDelinquency(); topCtx = { mode: 'blank', title: 'Gestão de inadimplência', back: '#/admin' }; }
+                else { html = view404(); topCtx = { mode: 'blank', title: '', back: '#/admin' }; }
+            } else {
+                html = view404();
+            }
+
+            root.innerHTML = '<div class="fade-in">' + html + '</div>';
+            renderTopbar(topCtx);
+            renderTabbar(tab, segs);
+            window.scrollTo(0, 0);
+        }
+
+        /* =========================================================================
+           TOPBAR / TABBAR
+           ========================================================================= */
+        function renderTopbar(ctx) {
+            const bar = document.getElementById('topbar');
+            if (ctx.mode === 'public') {
+                bar.innerHTML =
+                    '<div class="tb-left"><div class="z-mark"><span>Z</span></div><div><div class="tb-title">ZAANO VIAJA</div><div class="tb-eyebrow">Clube de crédito de viagens</div></div></div>' +
+                    '<a class="tb-login-btn" href="#/login">Entrar</a>';
+            } else if (ctx.mode === 'client-home') {
+                const c = getClient();
+                const unread = c.notifications.filter(n => !n.read).length;
+                bar.innerHTML =
+                    '<div class="tb-left"><div class="z-mark"><span>Z</span></div><div class="greet-block"><span class="greet-hi">Bem-vinda de volta</span><span class="greet-name">' + c.name.split(' ')[0] + '</span></div></div>' +
+                    '<div class="tb-right"><a class="tb-icon-btn" href="#/cliente/notificacoes">' + icon('bell', 18) + (unread ? '<span class="dot"></span>' : '') + '</a></div>';
+            } else if (ctx.mode === 'admin-home') {
+                bar.innerHTML =
+                    '<div class="tb-left"><div class="z-mark"><span>Z</span></div><div class="greet-block"><span class="greet-hi">Painel administrativo</span><span class="greet-name">José Henrique</span></div></div>' +
+                    '<div class="tb-right"><div class="tb-icon-btn" onclick="doLogout()">' + icon('logout', 18) + '</div></div>';
+            } else {
+                bar.innerHTML =
+                    '<div class="tb-left">' + (ctx.back ? '<a class="tb-back" href="' + ctx.back + '">' + icon('back', 18) + '</a>' : '') +
+                    '<div class="tb-title">' + (ctx.title || '') + '</div></div>' +
+                    '<div class="tb-right">' + ((STATE.session) ? '<div class="tb-icon-btn" onclick="doLogout()">' + icon('logout', 18) + '</div>' : '') + '</div>';
+            }
+        }
+
+        const CLIENT_TABS = [
+            { seg: '', label: 'Início', ico: 'home', href: '#/cliente' },
+            { seg: 'historico', label: 'Histórico', ico: 'history', href: '#/cliente/historico' },
+            { seg: 'notificacoes', label: 'Avisos', ico: 'bell', href: '#/cliente/notificacoes' },
+            { seg: 'perfil', label: 'Perfil', ico: 'user', href: '#/cliente/perfil' },
+        ];
+        const ADMIN_TABS = [
+            { seg: '', label: 'Painel', ico: 'grid', href: '#/admin' },
+            { seg: 'assinantes', label: 'Assinantes', ico: 'users', href: '#/admin/assinantes' },
+            { seg: 'ofertas', label: 'Ofertas', ico: 'megaphone', href: '#/admin/ofertas' },
+            { seg: 'relatorio', label: 'Relatório', ico: 'chart', href: '#/admin/relatorio' },
+            { seg: 'inadimplencia', label: 'Atrasos', ico: 'alert', href: '#/admin/inadimplencia' },
+        ];
+        function renderTabbar(tab, segs) {
+            const bar = document.getElementById('tabbar');
+            if (!tab) { bar.innerHTML = ''; bar.style.display = 'none'; return; }
+            bar.style.display = 'flex';
+            const tabs = tab === 'client' ? CLIENT_TABS : ADMIN_TABS;
+            const active = segs[1] || '';
+            const unread = tab === 'client' ? getClient().notifications.filter(n => !n.read).length : 0;
+            bar.innerHTML = tabs.map(t => {
+                const on = t.seg === active;
+                const showDot = tab === 'client' && t.seg === 'notificacoes' && unread > 0;
+                return '<a class="tab ' + (on ? 'on' : '') + '" href="' + t.href + '">' + icon(t.ico, 20) + (showDot ? '<span class="dot"></span>' : '') + '<span>' + t.label + '</span></a>';
+            }).join('');
+        }
+
+        /* =========================================================================
+           VIEW — 404
+           ========================================================================= */
+        function view404() {
+            return '<div class="empty-state">' + icon('compass', 32) + '<div>Essa tela ainda não existe por aqui.</div></div>';
+        }
+
+        /* =========================================================================
+           VIEW — LANDING (público, sem login)
+           ========================================================================= */
+        function viewLanding() {
+            const plans = getPlans();
+            return `
+  <div class="hero">
+    <h1 class="headline">Acumule crédito todo mês.<br>Viaje quando <em>o mundo chamar</em>.</h1>
+    <p class="lede">Assine um plano do clube Zaano Viaja, receba bônus sobre cada mensalidade e use o saldo para pedir seu próximo pacote — nacional ou internacional — com a assessoria completa da Zaano Tour.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="document.getElementById('planos-section').scrollIntoView({behavior:'smooth'})">Ver planos</button>
+      <a class="btn btn-ghost" href="${whatsappLink('Olá! Quero saber mais sobre o clube Zaano Viaja.')}" target="_blank">Falar no WhatsApp</a>
+    </div>
+  </div>
+
+  <div id="planos-section" class="how-it-works" style="padding-top:34px;">
+    <div class="section-label">Escolha seu plano</div>
+  </div>
+  <div class="plans-wrap">
+    ${plans.map(p => `
+      <div class="plan-card ${p.featured ? 'feat' : ''}">
+        ${p.featured ? '<div class="plan-badge">MAIS ESCOLHIDO</div>' : ''}
+        <div class="plan-top"><span class="plan-name">${p.name}</span><span class="plan-audience">${p.audience}</span></div>
+        <div class="plan-price">${fmtBRL(p.price)}<small>/mês</small></div>
+        <div class="plan-bonus"><span class="dot-gold"></span>${p.bonusPct}% de bônus por mês</div>
+        <div class="plan-actions">
+          <a class="btn btn-primary-sm" href="#/assinar/${p.id}">Assinar</a>
+          <button class="btn btn-ghost-sm" onclick="openPlanInfo('${p.id}')">Detalhes</button>
+        </div>
+      </div>
+    `).join('')}
+  </div>
+
+  <div class="how-it-works">
+    <div class="section-label">Como funciona</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-txt"><b>Assine</b> um dos três planos, com cobrança mensal recorrente processada pelo Asaas.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-txt"><b>Acumule crédito</b> com bônus sobre cada pagamento — sempre visível, em tempo real, no seu painel.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-txt"><b>Peça sua viagem</b> quando quiser — a Zaano Tour monta o pacote usando o seu saldo acumulado.</div></div>
+    </div>
+  </div>
+
+  <div class="cta-final">
+    <div class="display">Pronta para começar a acumular?</div>
+    <p>Sem burocracia — leva menos de 2 minutos para assinar.</p>
+    <a class="btn btn-primary" href="#/assinar/viajante">Quero fazer parte</a>
+  </div>
+
+  <div class="contact-row">
+    <a href="https://instagram.com/zaanotour" target="_blank">@zaanotour</a>
+    <span class="contact-sep"></span>
+    <span>Zaano Tour Viagens · Cascavel/PR</span>
+  </div>
+  <div class="footer-note">CNPJ 66.384.184/0001-49 · Cadastur ativo<br>"A vida é curta. O mundo é grande."</div>
+  `;
+        }
+        function openPlanInfo(id) {
+            const p = getPlan(id);
+            openModal(p.name, `
+    <div class="plan-summary" style="margin-bottom:16px;">
+      <div><b>${fmtBRL(p.price)}/mês</b><span>Bônus de ${p.bonusPct}% sobre cada mensalidade</span></div>
+      <span class="badge badge-gold">${p.audience}</span>
+    </div>
+    <p class="muted" style="font-size:13px; line-height:1.6; margin:0 0 20px;">
+      O crédito acumulado, incluindo o bônus, fica disponível no seu painel do Zaano Viaja e pode ser usado a qualquer momento para solicitar pacotes de viagem nacionais ou internacionais junto à Zaano Tour.
+    </p>
+    <a class="btn btn-primary" href="#/assinar/${p.id}" onclick="closeModal()">Assinar ${p.name}</a>
+  `);
+        }
+
+        /* =========================================================================
+           VIEW — SIGNUP (adesão)
+           ========================================================================= */
+        function viewSignup(planId) {
+            const plan = getPlan(planId) || getPlan('viajante');
+            return `
+  <div class="auth-wrap">
+    <div class="plan-summary">
+      <div><b>${plan.name}</b><span>${fmtBRL(plan.price)}/mês · bônus de ${plan.bonusPct}%</span></div>
+      <a class="link-sm" href="#/">Trocar</a>
+    </div>
+    <form onsubmit="submitSignup(event, '${plan.id}')">
+      <div class="field"><label>Nome completo</label><input type="text" placeholder="Como podemos te chamar?" required></div>
+      <div class="field"><label>E-mail</label><input type="email" placeholder="voce@email.com" required></div>
+      <div class="field"><label>WhatsApp</label><input type="tel" placeholder="(45) 90000-0000" required></div>
+      <button class="btn btn-primary" type="submit">Ir para pagamento</button>
+      <div class="field-hint" style="text-align:center; margin-top:12px;">Pagamento recorrente processado com segurança pelo Asaas.</div>
+    </form>
+  </div>
+  `;
+        }
+        function submitSignup(e, planId) {
+            e.preventDefault();
+            toast('Redirecionando para pagamento seguro…');
+            setTimeout(() => { location.hash = '#/assinar/confirmacao'; }, 700);
+        }
+        function viewSignupConfirm() {
+            return `
+  <div class="confirm-wrap">
+    <div class="confirm-icon">${icon('check', 36)}</div>
+    <h1 class="display">Quase lá!</h1>
+    <p>Você foi redirecionado ao ambiente seguro do Asaas para concluir o pagamento recorrente. Assim que a primeira mensalidade for confirmada, seu acesso ao painel Zaano Viaja é liberado automaticamente.</p>
+    <a class="btn btn-primary" href="#/login">Já paguei, quero entrar</a>
+    <div style="height:10px;"></div>
+    <a class="btn btn-ghost" href="#/">Voltar ao início</a>
+  </div>
+  `;
+        }
+
+        /* =========================================================================
+           VIEW — LOGIN
+           ========================================================================= */
+        function viewLogin() {
+            return `
+  <div class="auth-wrap">
+    <div class="auth-head">
+      <div class="z-mark z-mark-lg"><span>Z</span></div>
+      <h1>Acessar o Zaano Viaja</h1>
+      <p>Entre com seu e-mail e senha</p>
+    </div>
+    <div class="segmented">
+      <button class="${STATE.loginRole === 'client' ? 'active' : ''}" onclick="setLoginRole('client')">Sou cliente</button>
+      <button class="${STATE.loginRole === 'admin' ? 'active' : ''}" onclick="setLoginRole('admin')">Sou administrador</button>
+    </div>
+    <form onsubmit="submitLogin(event)">
+      <div class="field"><label>E-mail</label><input type="email" placeholder="${STATE.loginRole === 'admin' ? 'jose@zaanotour.com.br' : 'voce@email.com'}" required></div>
+      <div class="field"><label>Senha</label><input type="password" placeholder="••••••••" required></div>
+      <button class="btn btn-primary" type="submit">Entrar</button>
+      <div class="field-hint" style="text-align:center; margin-top:14px;">Esqueci minha senha</div>
+    </form>
+  </div>
+  `;
+        }
+        function setLoginRole(role) { STATE.loginRole = role; render(); }
+        function submitLogin(e) {
+            e.preventDefault();
+            STATE.session = { role: STATE.loginRole };
+            location.hash = STATE.loginRole === 'admin' ? '#/admin' : '#/cliente';
+        }
+        function doLogout() {
+            STATE.session = null;
+            location.hash = '#/';
+        }
+
+        /* =========================================================================
+           VIEW — CLIENTE · DASHBOARD
+           ========================================================================= */
+        function viewClientDashboard() {
+            const c = getClient();
+            const plan = getPlan(c.planId);
+            const total = c.balance;
+            const bonusShare = Math.min(0.85, c.bonusTotal / total);
+            const circumference = 2 * Math.PI * 88;
+            const offset = circumference * (1 - 0.72);
+            return `
+  <div class="ring-wrap">
+    <div class="ring">
+      <svg width="212" height="212" viewBox="0 0 212 212">
+        <circle cx="106" cy="106" r="88" stroke="#22385C" stroke-width="14" fill="none"/>
+        <circle cx="106" cy="106" r="88" stroke="url(#goldGrad)" stroke-width="14" fill="none"
+          stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
+        <defs><linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#E8C766"/><stop offset="100%" stop-color="#8A7226"/>
+        </linearGradient></defs>
+      </svg>
+      <div class="ring-center">
+        <div class="ring-label">Saldo acumulado</div>
+        <div class="ring-value tabular">${fmtBRL(total)}</div>
+        <div class="ring-sub">+ ${fmtBRL(c.bonusTotal)} em bônus</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-pill">${icon('compass', 15)} Plano ${plan.name} · renova em ${c.renewalDate}</div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-k">Mensalidade</div><div class="stat-v tabular">${fmtBRL(plan.price)}</div></div>
+    <div class="stat-card"><div class="stat-k">Bônus do mês</div><div class="stat-v tabular">${fmtBRL(Math.round(plan.price * plan.bonusPct / 100))}</div></div>
+  </div>
+
+  <div class="cta-travel">
+    <div><b>Pronta pra viajar?</b><span>Fale com a Zaano Tour agora</span></div>
+    <a class="btn btn-primary-sm" href="${whatsappLink('Olá! Quero usar meu saldo Zaano Viaja para montar uma viagem.')}" target="_blank">Quero viajar</a>
+  </div>
+
+  <div class="section-head" style="margin-top:22px;">
+    <div class="section-label">Últimos pagamentos</div>
+    <a class="link-sm" href="#/cliente/historico">Ver tudo</a>
+  </div>
+  <div class="card" style="margin:0 20px; padding:0;">
+    ${c.history.slice(0, 3).map(h => historyRowHTML(h)).join('')}
+  </div>
+
+  <div class="btn-block-row" style="margin-top:20px;">
+    <a class="btn btn-ghost" href="#/cliente/upgrade">Fazer upgrade de plano</a>
+  </div>
+  `;
+        }
+        function historyRowHTML(h) {
+            return `<div class="hist-item">
+    <div class="hist-left"><b>${h.label}</b><span>Pago em ${h.date}</span></div>
+    <div class="hist-right"><b>+ ${fmtBRL(h.amount + h.bonus)}</b><span>inclui ${fmtBRL(h.bonus)} de bônus</span></div>
+  </div>`;
+        }
+
+        /* =========================================================================
+           VIEW — CLIENTE · HISTÓRICO COMPLETO
+           ========================================================================= */
+        function viewClientHistory() {
+            const c = getClient();
+            const totalPaid = c.history.reduce((s, h) => s + h.amount, 0);
+            const totalBonus = c.history.reduce((s, h) => s + h.bonus, 0);
+            return `
+  <div class="stat-row" style="padding-top:18px;">
+    <div class="stat-card"><div class="stat-k">Total pago</div><div class="stat-v tabular">${fmtBRL(totalPaid)}</div></div>
+    <div class="stat-card"><div class="stat-k">Total em bônus</div><div class="stat-v tabular">${fmtBRL(totalBonus)}</div></div>
+  </div>
+  <div class="section-head" style="margin-top:20px;"><div class="section-label">Todos os pagamentos</div></div>
+  <div class="card" style="margin:0 20px 20px; padding:0;">
+    ${c.history.map(h => historyRowHTML(h)).join('')}
+  </div>
+  `;
+        }
+
+        /* =========================================================================
+           VIEW — CLIENTE · UPGRADE
+           ========================================================================= */
+        function viewClientUpgrade() {
+            const c = getClient();
+            return `
+  <div style="padding:18px 20px 12px;"><p class="muted" style="font-size:13px; line-height:1.6; margin:0;">Escolha o novo plano. O upgrade passa a valer na sua próxima renovação, em ${c.renewalDate}.</p></div>
+  <div class="upgrade-plan-row">
+    ${getPlans().map(p => {
+                const isCurrent = p.id === c.planId;
+                return `<div class="upgrade-card ${isCurrent ? 'current' : ''}" ${isCurrent ? '' : `onclick="confirmUpgrade('${p.id}')"`}>
+        <div class="upgrade-top">
+          <div><b class="display" style="font-size:15px;">${p.name}</b><div class="faint" style="font-size:11.5px; margin-top:2px;">${fmtBRL(p.price)}/mês · bônus ${p.bonusPct}%</div></div>
+          ${isCurrent ? '<span class="badge badge-muted">Plano atual</span>' : '<div class="upgrade-radio"></div>'}
+        </div>
+      </div>`;
+            }).join('')}
+  </div>
+  `;
+        }
+        function confirmUpgrade(planId) {
+            const p = getPlan(planId);
+            openModal('Confirmar upgrade', `
+    <p class="muted" style="font-size:13px; line-height:1.6; margin:0 0 18px;">Você está trocando para o plano <b style="color:var(--ink);">${p.name}</b> (${fmtBRL(p.price)}/mês, bônus de ${p.bonusPct}%). A mudança entra em vigor na sua próxima renovação.</p>
+    <button class="btn btn-primary" onclick="applyUpgrade('${planId}')">Confirmar upgrade</button>
+  `);
+        }
+        function applyUpgrade(planId) {
+            CLIENT.planId = planId;
+            closeModal();
+            toast('Upgrade solicitado com sucesso');
+            render();
+        }
+
+        /* =========================================================================
+           VIEW — CLIENTE · NOTIFICAÇÕES
+           ========================================================================= */
+        const NOTIF_ICON = { saldo: 'wallet', credito: 'check', oferta: 'gift' };
+        function viewClientNotifications() {
+            const c = getClient();
+            if (c.notifications.length === 0) return `<div class="empty-state">${icon('bell', 32)}<div>Nenhuma notificação por enquanto.</div></div>`;
+            return `<div style="padding-top:8px;">` +
+                c.notifications.map(n => `
+      <div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead(${n.id})">
+        <div class="notif-ico ${n.type}">${icon(NOTIF_ICON[n.type], 17)}</div>
+        <div class="notif-body"><b>${n.title}</b><p>${n.body}</p><span>${n.date}</span></div>
+      </div>
+    `).join('') + `</div>`;
+        }
+        function markNotifRead(id) {
+            const n = CLIENT.notifications.find(n => n.id === id);
+            if (n && !n.read) { n.read = true; render(); }
+        }
+
+        /* =========================================================================
+           VIEW — CLIENTE · PERFIL
+           ========================================================================= */
+        function viewClientProfile() {
+            const c = getClient();
+            const p = getPlan(c.planId);
+            return `
+  <div class="profile-head">
+    <div class="avatar">${initials(c.name)}</div>
+    <div><b>${c.name}</b><span>Assinante desde ${c.since}</span></div>
+  </div>
+  <div class="card" style="margin:16px 20px 0;">
+    <div class="info-row"><span class="k">E-mail</span><span class="v">${c.email}</span></div>
+    <div class="info-row"><span class="k">WhatsApp</span><span class="v">${c.whatsapp}</span></div>
+    <div class="info-row"><span class="k">Plano atual</span><span class="v">${p.name}</span></div>
+    <div class="info-row"><span class="k">Renovação</span><span class="v">${c.renewalDate}</span></div>
+  </div>
+  <div class="lgpd-note">${icon('shield', 18)}<span>Seus dados são armazenados com segurança e tratados em conformidade com a LGPD.</span></div>
+  <div class="btn-block-row" style="margin-top:20px;">
+    <a class="btn btn-ghost" href="${whatsappLink('Olá! Preciso de ajuda com minha conta no Zaano Viaja.')}" target="_blank">Falar com a Zaano Tour</a>
+    <button class="btn btn-ghost" style="color:var(--bad); border-color:rgba(224,138,115,0.35);" onclick="doLogout()">Sair da conta</button>
+  </div>
+  `;
+        }
+
+        /* =========================================================================
+           VIEW — ADMIN · PAINEL
+           ========================================================================= */
+        function viewAdminDashboard() {
+            const k = adminKPIs();
+            return `
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-k">Assinantes ativos</div><div class="kpi-v">${k.active}</div></div>
+    <div class="kpi"><div class="kpi-k">Receita mensal</div><div class="kpi-v tabular">${fmtBRL(k.monthlyRevenue)}</div></div>
+    <div class="kpi"><div class="kpi-k">Saldo total emitido</div><div class="kpi-v tabular">${fmtBRL(k.totalBalance)}</div></div>
+    <div class="kpi"><div class="kpi-k">Em atraso</div><div class="kpi-v ${k.late ? 'bad' : ''}">${k.late}</div></div>
+  </div>
+
+  <div class="quick-grid">
+    <div class="quick-card" onclick="navigate('#/admin/assinantes')">${icon('users', 22)}<b>Assinantes</b><span>Ver saldos e planos</span></div>
+    <div class="quick-card" onclick="navigate('#/admin/ofertas')">${icon('megaphone', 22)}<b>Enviar oferta</b><span>Notificar o clube</span></div>
+    <div class="quick-card" onclick="navigate('#/admin/relatorio')">${icon('chart', 22)}<b>Relatório</b><span>Receita por plano</span></div>
+    <div class="quick-card" onclick="navigate('#/admin/inadimplencia')">${icon('alert', 22)}<b>Inadimplência</b><span>${k.late} assinante${k.late === 1 ? '' : 's'} em atraso</span></div>
+  </div>
+
+  <div class="integrations">
+    <div class="integrations-head">${icon('shield', 16)}<b>Integrações</b></div>
+    <div class="integ-row"><span class="k">${icon('wallet', 15)} Asaas — cobrança recorrente</span><span class="badge badge-ok">Conectado</span></div>
+    <div class="integ-row"><span class="k">${icon('whatsapp', 15)} WhatsApp Business</span><span class="badge badge-ok">Conectado</span></div>
+    <div class="integ-row"><span class="k">${icon('bell', 15)} Notificações push</span><span class="badge badge-ok">Ativo</span></div>
+    <div class="integ-row"><span class="k">${icon('compass', 15)} Instagram @zaanotour</span><span class="badge badge-ok">Vinculado</span></div>
+  </div>
+
+  <div class="section-head" style="margin-top:22px;">
+    <div class="section-label">Assinantes recentes</div>
+    <a class="link-sm" href="#/admin/assinantes">Ver todos</a>
+  </div>
+  <div class="card" style="margin:0 20px; padding:0;">
+    ${SUBSCRIBERS.slice(0, 3).map(s => subscriberRowHTML(s)).join('')}
+  </div>
+  `;
+        }
+
+        /* =========================================================================
+           VIEW — ADMIN · ASSINANTES
+           ========================================================================= */
+        function subscriberRowHTML(s) {
+            const p = getPlan(s.planId);
+            return `<div class="sub-row" onclick="navigate('#/admin/assinantes/${s.id}')">
+    <div class="avatar">${initials(s.name)}</div>
+    <div class="sub-info"><b>${s.name}</b><span>${p.name} · desde ${s.since}</span></div>
+    <div class="sub-right"><b class="tabular">${fmtBRL(s.balance)}</b><span class="badge ${s.status === 'ok' ? 'badge-ok' : 'badge-late'}">${s.status === 'ok' ? 'Em dia' : 'Atrasado'}</span></div>
+  </div>`;
+        }
+        function viewAdminSubscribers() {
+            let list = getSubscribers();
+            if (STATE.subFilter !== 'todos') list = list.filter(s => STATE.subFilter === 'atraso' ? s.status === 'late' : s.planId === STATE.subFilter);
+            if (STATE.subSearch) list = list.filter(s => s.name.toLowerCase().includes(STATE.subSearch.toLowerCase()));
+            return `
+  <div class="search-bar" style="margin-top:14px;">
+    ${icon('search', 17)}
+    <input type="text" placeholder="Buscar assinante" value="${STATE.subSearch}" oninput="STATE.subSearch=this.value; renderSubList();">
+  </div>
+  <div class="filter-chips">
+    <div class="chip ${STATE.subFilter === 'todos' ? 'active' : ''}" onclick="setSubFilter('todos')">Todos</div>
+    <div class="chip ${STATE.subFilter === 'explorador' ? 'active' : ''}" onclick="setSubFilter('explorador')">Explorador</div>
+    <div class="chip ${STATE.subFilter === 'viajante' ? 'active' : ''}" onclick="setSubFilter('viajante')">Viajante</div>
+    <div class="chip ${STATE.subFilter === 'globetrotter' ? 'active' : ''}" onclick="setSubFilter('globetrotter')">Globetrotter</div>
+    <div class="chip ${STATE.subFilter === 'atraso' ? 'active' : ''}" onclick="setSubFilter('atraso')">Em atraso</div>
+  </div>
+  <div class="list-count">${list.length} assinante${list.length === 1 ? '' : 's'}</div>
+  <div id="sub-list">${list.length ? list.map(s => subscriberRowHTML(s)).join('') : `<div class="empty-state">${icon('users', 30)}<div>Nenhum assinante encontrado.</div></div>`}</div>
+  `;
+        }
+        function setSubFilter(f) { STATE.subFilter = f; render(); }
+        function renderSubList() {
+            let list = getSubscribers();
+            if (STATE.subFilter !== 'todos') list = list.filter(s => STATE.subFilter === 'atraso' ? s.status === 'late' : s.planId === STATE.subFilter);
+            if (STATE.subSearch) list = list.filter(s => s.name.toLowerCase().includes(STATE.subSearch.toLowerCase()));
+            document.getElementById('sub-list').innerHTML = list.length ? list.map(s => subscriberRowHTML(s)).join('') : `<div class="empty-state">${icon('users', 30)}<div>Nenhum assinante encontrado.</div></div>`;
+            document.querySelector('.list-count').textContent = list.length + ' assinante' + (list.length === 1 ? '' : 's');
+        }
+
+        /* =========================================================================
+           VIEW — ADMIN · DETALHE DO ASSINANTE
+           ========================================================================= */
+        function viewAdminSubscriberDetail(id) {
+            const s = getSubscriber(id);
+            if (!s) return view404();
+            const p = getPlan(s.planId);
+            return `
+  <div class="detail-hero">
+    <div class="avatar">${initials(s.name)}</div>
+    <b>${s.name}</b>
+    <span>${s.email}</span>
+    <div style="margin-top:10px; display:flex; gap:8px;">
+      <span class="badge badge-gold">${p.name}</span>
+      <span class="badge ${s.status === 'ok' ? 'badge-ok' : 'badge-late'}">${s.status === 'ok' ? 'Em dia' : 'Atrasado há ' + s.daysLate + ' dias'}</span>
+    </div>
+  </div>
+  <div class="detail-balances">
+    <div class="detail-bal-card"><div class="stat-k">Saldo</div><div class="stat-v tabular">${fmtBRL(s.balance)}</div></div>
+    <div class="detail-bal-card"><div class="stat-k">Bônus total</div><div class="stat-v tabular">${fmtBRL(s.bonusTotal)}</div></div>
+    <div class="detail-bal-card"><div class="stat-k">Último pgto.</div><div class="stat-v" style="font-size:13.5px;">${s.lastPayment}</div></div>
+  </div>
+  <div class="btn-block-row" style="margin-top:18px;">
+    <button class="btn btn-primary" onclick="openLancarCredito(${s.id})">${icon('plus', 17)} Lançar crédito ou bônus</button>
+    <a class="btn btn-ghost" href="${whatsappLink('Olá ' + s.name.split(' ')[0] + '! Aqui é da Zaano Tour.')}" target="_blank">Falar no WhatsApp</a>
+  </div>
+  <div class="section-head" style="margin-top:22px;"><div class="section-label">Cliente desde</div></div>
+  <div class="card" style="margin:0 20px;"><div class="info-row"><span class="k">Assinante desde</span><span class="v">${s.since}</span></div><div class="info-row"><span class="k">Plano</span><span class="v">${p.name} · ${fmtBRL(p.price)}/mês</span></div></div>
+  `;
+        }
+        function openLancarCredito(id) {
+            openModal('Lançar crédito ou bônus', `
+    <form onsubmit="submitLancamento(event, ${id})">
+      <div class="field">
+        <label>Tipo de lançamento</label>
+        <select id="lanc-tipo"><option value="credito">Crédito manual</option><option value="bonus">Bônus extra</option></select>
+      </div>
+      <div class="field"><label>Valor (R$)</label><input id="lanc-valor" type="number" min="1" step="1" placeholder="0" required></div>
+      <div class="field"><label>Motivo (opcional)</label><textarea placeholder="Ex: bônus de indicação, ajuste manual…"></textarea></div>
+      <button class="btn btn-primary" type="submit">Confirmar lançamento</button>
+    </form>
+  `);
+        }
+        function submitLancamento(e, id) {
+            e.preventDefault();
+            const tipo = document.getElementById('lanc-tipo').value;
+            const valor = Number(document.getElementById('lanc-valor').value) || 0;
+            const s = getSubscriber(id);
+            if (s && valor > 0) {
+                s.balance += valor;
+                if (tipo === 'bonus') s.bonusTotal += valor;
+                if (s.id === CLIENT.id) { CLIENT.balance += valor; if (tipo === 'bonus') CLIENT.bonusTotal += valor; }
+            }
+            closeModal();
+            toast('Lançamento registrado com sucesso');
+            render();
+        }
+
+        /* =========================================================================
+           VIEW — ADMIN · OFERTAS / NOTIFICAÇÕES
+           ========================================================================= */
+        function viewAdminOffers() {
+            return `
+  <div style="padding:18px 20px 6px;">
+    <div class="card card-grad">
+      <form onsubmit="submitOffer(event)">
+        <div class="field"><label>Título</label><input id="off-title" type="text" placeholder="Ex: Oferta especial Cancún" required></div>
+        <div class="field"><label>Mensagem</label><textarea id="off-body" placeholder="Descreva a oferta ou o aviso…" required></textarea></div>
+        <div class="field">
+          <label>Público-alvo</label>
+          <select id="off-audience">
+            <option value="Todos os assinantes">Todos os assinantes</option>
+            <option value="Somente Explorador">Somente plano Explorador</option>
+            <option value="Somente Viajante">Somente plano Viajante</option>
+            <option value="Somente Globetrotter">Somente plano Globetrotter</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit">${icon('megaphone', 17)} Enviar notificação</button>
+      </form>
+    </div>
+  </div>
+  <div class="section-head" style="margin-top:20px;"><div class="section-label">Ofertas enviadas</div></div>
+  <div id="offers-list">${OFFERS.map(o => offerRowHTML(o)).join('')}</div>
+  `;
+        }
+        function offerRowHTML(o) {
+            return `<div class="offer-item">
+    <div class="offer-item-top"><b>${o.title}</b><span class="badge badge-gold">${o.reach} envio${o.reach === 1 ? '' : 's'}</span></div>
+    <p>${o.body}</p>
+    <div class="offer-meta"><span>${o.audience}</span><span>·</span><span>${o.date}</span></div>
+  </div>`;
+        }
+        function submitOffer(e) {
+            e.preventDefault();
+            const title = document.getElementById('off-title').value;
+            const body = document.getElementById('off-body').value;
+            const audience = document.getElementById('off-audience').value;
+            let reach = SUBSCRIBERS.length;
+            if (audience.startsWith('Somente')) {
+                const planName = audience.replace('Somente ', '');
+                reach = SUBSCRIBERS.filter(s => getPlan(s.planId).name === planName).length;
+            }
+            const offer = { id: OFFERS.length + 1, title, body, audience, date: new Date().toLocaleDateString('pt-BR'), reach };
+            OFFERS.unshift(offer);
+
+            const clientPlanName = getPlan(CLIENT.planId).name;
+            if (audience === 'Todos os assinantes' || audience === 'Somente ' + clientPlanName) {
+                CLIENT.notifications.unshift({ id: CLIENT.notifications.length + 1, type: 'oferta', title, body, date: offer.date, read: false });
+            }
+
+            document.getElementById('off-title').value = '';
+            document.getElementById('off-body').value = '';
+            toast('Notificação enviada para ' + reach + ' assinante' + (reach === 1 ? '' : 's'));
+            render();
+        }
+
+        /* =========================================================================
+           VIEW — ADMIN · RELATÓRIO DE RECEITA
+           ========================================================================= */
+        function viewAdminReport() {
+            const { months, totals } = REVENUE_HISTORY;
+            const max = Math.max(...totals);
+            const k = adminKPIs();
+            return `
+  <div class="chart-card" style="margin-top:16px;">
+    <div class="section-label" style="margin-bottom:14px;">Receita mensal — últimos 6 meses</div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:${PLAN_COLOR.explorador}"></span>Explorador</div>
+      <div class="legend-item"><span class="legend-dot" style="background:${PLAN_COLOR.viajante}"></span>Viajante</div>
+      <div class="legend-item"><span class="legend-dot" style="background:${PLAN_COLOR.globetrotter}"></span>Globetrotter</div>
+    </div>
+    <div class="bars-wrap">
+      ${months.map((m, i) => {
+                const total = totals[i];
+                const h = Math.round((total / max) * 130);
+                const eH = Math.round(h * PLAN_MIX.explorador);
+                const vH = Math.round(h * PLAN_MIX.viajante);
+                const gH = h - eH - vH;
+                return `<div class="bar-col">
+          <div class="bar-stack" style="height:${h}px;">
+            <div class="bar-seg" style="height:${eH}px; background:${PLAN_COLOR.explorador};"></div>
+            <div class="bar-seg" style="height:${vH}px; background:${PLAN_COLOR.viajante};"></div>
+            <div class="bar-seg" style="height:${gH}px; background:${PLAN_COLOR.globetrotter};"></div>
+          </div>
+          <div class="bar-month">${m}</div>
+        </div>`;
+            }).join('')}
+    </div>
+  </div>
+
+  <div class="report-table">
+    <div class="section-label" style="margin-bottom:8px;">Receita por plano (mês atual)</div>
+    ${getPlans().map(p => {
+                const count = SUBSCRIBERS.filter(s => s.planId === p.id).length;
+                const rev = count * p.price;
+                return `<div class="report-row">
+        <div class="report-plan"><span class="legend-dot" style="background:${PLAN_COLOR[p.id]}"></span>${p.name}</div>
+        <div class="report-vals"><b class="tabular">${fmtBRL(rev)}</b><span>${count} assinante${count === 1 ? '' : 's'}</span></div>
+      </div>`;
+            }).join('')}
+    <div class="report-row"><div class="report-plan"><b>Total</b></div><div class="report-vals"><b class="tabular">${fmtBRL(k.monthlyRevenue)}</b></div></div>
+  </div>
+  `;
+        }
+
+        /* =========================================================================
+           VIEW — ADMIN · INADIMPLÊNCIA
+           ========================================================================= */
+        function viewAdminDelinquency() {
+            const late = SUBSCRIBERS.filter(s => s.status === 'late');
+            if (late.length === 0) return `<div class="empty-state">${icon('check', 32)}<div>Nenhum assinante em atraso no momento.</div></div>`;
+            return `
+  <div style="padding:16px 20px 8px;"><p class="muted" style="font-size:12.5px; line-height:1.6; margin:0;">${late.length} assinante${late.length === 1 ? '' : 's'} com pagamento pendente. Envie um lembrete ou atualize o status assim que o pagamento for identificado.</p></div>
+  <div id="late-list">${late.map(s => lateItemHTML(s)).join('')}</div>
+  `;
+        }
+        function lateItemHTML(s) {
+            const p = getPlan(s.planId);
+            return `<div class="late-item">
+    <div class="late-top">
+      <div><b>${s.name}</b><span>${p.name} · ${fmtBRL(p.price)}/mês em aberto</span></div>
+      <div class="late-days"><b>${s.daysLate}</b><span>dias</span></div>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-ghost-sm" style="flex:1;" href="${whatsappLink('Olá ' + s.name.split(' ')[0] + ', tudo bem? Notamos que sua mensalidade do Zaano Viaja está em aberto — podemos ajudar a regularizar?')}" target="_blank">${icon('whatsapp', 15)} Lembrete</a>
+      <button class="btn btn-danger-sm" style="flex:1;" onclick="markPaid(${s.id})">Marcar como pago</button>
+    </div>
+  </div>`;
+        }
+        function markPaid(id) {
+            const s = getSubscriber(id);
+            if (s) { s.status = 'ok'; delete s.daysLate; }
+            toast('Assinante marcado como em dia');
+            render();
+        }
+
+        /* =========================================================================
+           INICIALIZAÇÃO
+           ========================================================================= */
+        if (!location.hash) { location.hash = '#/'; }
+        render();
+        window.addEventListener('hashchange', render);
+    </script>
 </body>
-
-<footer>
-    <div class="footer-container">
-
-        <div class="footer-logo">
-            <h2>Zaano Tour Viagens</h2>
-            <p>Agência de viagens</p>
-            <p>CNPJ: 66.384.184.0001-49</p>
-        </div>
-
-        <div class="footer-links">
-            <h3>Links</h3>
-            <ul>
-                <li><a href="https://www.instagram.com/zaanoviagens?igsh=MWJvNXU2bjh3dGgyaQ%3D%3D&utm_source=qr">Instagram</a></li>
-                <li><a href="https://wa.me/message/CCKOPLDPFCYWM1">WhatsApp</a></li>
-                <li><a href="#inicio">Topo da pagina</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-contato">
-            <h3>Contato</h3>
-            <p>Email: atendimento@zaanotour.com</p>
-            <p>Telefone: (45)98801-6250</p>
-        </div>
-
-        <div class="footer-copy">
-            <p>&copy; 2026 Zaano tour viagens. Todos os direitos reservados.</p>
-        </div>
-
-    </div>
-</footer>
 
 </html>
