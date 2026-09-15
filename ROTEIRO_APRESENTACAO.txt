@@ -1,0 +1,48 @@
+ROTEIRO CURTO PARA APRESENTAR O PROJETO
+=======================================
+
+1. O QUE É
+-----------
+"Esse é um site simples de consulta de animes. Eu fiz ele em HTML, CSS e JavaScript puro. O objetivo principal não é criar um sistema enorme, e sim demonstrar o consumo de uma API REST pública."
+
+2. QUAL API
+-----------
+"A API usada é a Jikan v4. Ela disponibiliza dados públicos relacionados ao MyAnimeList e não exige chave para essas consultas. Meu site só faz requisições GET, ou seja, ele só lê informações."
+
+3. MOSTRAR O TOP ANIMES
+----------------------
+"Assim que a página abre, o JavaScript chama o endpoint /top/anime. A resposta vem em JSON. Depois eu acesso a propriedade data e percorro os animes para criar os cards na página."
+
+4. MOSTRAR A BUSCA
+------------------
+Digite, por exemplo: Naruto
+
+"Quando eu pesquiso Naruto, o nome vai para a URL da API. A API devolve os resultados encontrados e o JavaScript atualiza somente essa parte da página, sem precisar recarregar o site inteiro."
+
+5. MOSTRAR DETALHES
+-------------------
+Clique em "Ver detalhes".
+
+"Aqui é feita outra requisição, agora usando o ID do anime. O endpoint /anime/ID/full devolve dados mais completos, como sinopse, gêneros, episódios, ano e nota."
+
+6. MOSTRAR O CÓDIGO
+-------------------
+Abra js/script.js e procure por:
+
+    var resposta = await fetch(url);
+    var json = await resposta.json();
+
+Fale:
+"Essa é a parte central do consumo da API: fetch faz a requisição e json transforma a resposta em um objeto que o JavaScript consegue usar."
+
+7. SE PERGUNTAREM POR QUE NÃO TEM BACKEND
+-----------------------------------------
+"Esse projeto não precisa de backend porque a API é pública e não exige chave secreta. Para uma demonstração de consumo de API, o navegador pode chamar a Jikan diretamente."
+
+8. SE PERGUNTAREM O QUE É REST
+------------------------------
+"REST é um estilo de arquitetura para comunicação entre sistemas pela web. Aqui eu acesso recursos por URLs e uso requisições HTTP GET para consultar dados."
+
+9. SE A API DER ERRO AO VIVO
+----------------------------
+"Como é uma API pública externa, ela pode limitar requisições ou ficar temporariamente indisponível. O site trata esse caso mostrando uma mensagem de erro em vez de quebrar a página."
