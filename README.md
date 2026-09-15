@@ -76,7 +76,7 @@ Depois abra:
 http://localhost:5500
 ```
 
-## Como explicar na apresentação
+## Fluxo principal
 
 O fluxo principal é este:
 
