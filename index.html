@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AniBusca - Demonstração da API Jikan</title>
+    <title>AniBusca - Demonstração da API jikan-edge</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
             <div class="container hero-conteudo">
                 <div class="hero-texto">
                     <span class="tag">Projeto demonstrativo</span>
-                    <h1>Descubra animes usando a API pública Jikan</h1>
+                    <h1>Descubra animes usando a API pública jikan-edge</h1>
                     <p>
                         Um site simples feito com HTML, CSS e JavaScript puro para demonstrar
                         o consumo de uma API REST pública diretamente no navegador.
@@ -44,7 +44,7 @@
                         <span class="bolinha verde"></span>
                     </div>
                     <p class="painel-titulo">Exemplo de requisição</p>
-                    <code>GET https://api.jikan.moe/v4/top/anime</code>
+                    <code>GET https://jikan.lucashdo.com/v1/top/anime</code>
                     <p class="painel-resposta">→ A resposta chega em JSON e vira os cards abaixo.</p>
                 </div>
             </div>
@@ -88,7 +88,7 @@
 
                 <div class="endpoint-box">
                     <strong>Endpoint usado:</strong>
-                    <span id="endpointBusca">https://api.jikan.moe/v4/anime?q=...</span>
+                    <span id="endpointBusca">https://jikan.lucashdo.com/v1/anime?q=...</span>
                 </div>
 
                 <div class="mensagem" id="mensagemBusca">
@@ -111,7 +111,7 @@
                     <article class="passo">
                         <span>1</span>
                         <h3>JavaScript faz a requisição</h3>
-                        <p>A função <code>fetch()</code> envia uma requisição GET para a Jikan.</p>
+                        <p>A função <code>fetch()</code> envia uma requisição GET para a jikan-edge.</p>
                     </article>
 
                     <article class="passo">
@@ -132,8 +132,8 @@
 
     <footer class="rodape">
         <div class="container">
-            <p>AniBusca — projeto educacional usando a Jikan API v4.</p>
-            <p>Jikan é uma API não oficial para dados do MyAnimeList.</p>
+            <p>AniBusca — projeto educacional usando a API pública jikan-edge.</p>
+            <p>jikan-edge fornece dados públicos do MyAnimeList por uma API REST.</p>
         </div>
     </footer>
 

@@ -1,5 +1,6 @@
-// Endereço base da API pública Jikan v4.
-var API_BASE = "https://api.jikan.moe/v4";
+// Endereço base da API pública jikan-edge.
+// Ela não exige chave de API nem autenticação.
+var API_BASE = "https://jikan.lucashdo.com/v1";
 
 // Pegamos os elementos do HTML que serão usados no JavaScript.
 var listaTop = document.getElementById("listaTop");
@@ -23,14 +24,18 @@ async function carregarTopAnimes() {
     listaTop.innerHTML = "";
 
     try {
-        var resposta = await fetch(API_BASE + "/top/anime?limit=8");
+        // No jikan-edge o parâmetro limit não é aceito neste endpoint.
+        // Por isso buscamos a página e depois mostramos somente os 8 primeiros.
+        var resposta = await fetch(API_BASE + "/top/anime?page=1");
 
         if (!resposta.ok) {
             throw new Error("A API respondeu com erro.");
         }
 
         var json = await resposta.json();
-        mostrarAnimes(json.data, listaTop);
+        var primeirosAnimes = json.data.slice(0, 8);
+
+        mostrarAnimes(primeirosAnimes, listaTop);
         mensagemTop.textContent = "";
     } catch (erro) {
         mensagemTop.className = "mensagem erro";
@@ -46,12 +51,10 @@ function mostrarAnimes(animes, elementoDestino) {
     for (var i = 0; i < animes.length; i++) {
         var anime = animes[i];
 
-        var titulo = anime.title_english || anime.title || "Título não informado";
-        var imagem = "";
-
-        if (anime.images && anime.images.jpg) {
-            imagem = anime.images.jpg.large_image_url || anime.images.jpg.image_url;
-        }
+        var titulo = anime.titleEnglish || anime.title || "Título não informado";
+        var imagem = anime.images && anime.images.large
+            ? anime.images.large
+            : anime.imageUrl;
 
         var nota = anime.score ? anime.score.toFixed(2) : "N/A";
         var episodios = anime.episodes ? anime.episodes : "?";
@@ -69,7 +72,7 @@ function mostrarAnimes(animes, elementoDestino) {
                     <span>${escaparHtml(tipo)}</span>
                     <span>${episodios} ep.</span>
                 </div>
-                <button class="card-botao" onclick="abrirDetalhes(${anime.mal_id})">
+                <button class="card-botao" onclick="abrirDetalhes(${anime.malId})">
                     Ver detalhes
                 </button>
             </div>
@@ -89,7 +92,8 @@ async function buscarAnime(nome) {
         return;
     }
 
-    var url = API_BASE + "/anime?q=" + encodeURIComponent(nomeLimpo) + "&limit=8";
+    // O jikan-edge não aceita limit aqui. Buscamos normalmente e usamos os 8 primeiros resultados.
+    var url = API_BASE + "/anime?q=" + encodeURIComponent(nomeLimpo);
     endpointBusca.textContent = url;
 
     mensagemBusca.className = "mensagem";
@@ -110,8 +114,10 @@ async function buscarAnime(nome) {
             return;
         }
 
-        mostrarAnimes(json.data, listaBusca);
-        mensagemBusca.textContent = json.data.length + " resultado(s) encontrado(s).";
+        var resultados = json.data.slice(0, 8);
+
+        mostrarAnimes(resultados, listaBusca);
+        mensagemBusca.textContent = resultados.length + " resultado(s) mostrado(s).";
     } catch (erro) {
         mensagemBusca.className = "mensagem erro";
         mensagemBusca.textContent = "A pesquisa falhou. Aguarde alguns segundos e tente novamente.";
@@ -134,8 +140,10 @@ async function abrirDetalhes(idAnime) {
         var json = await resposta.json();
         var anime = json.data;
 
-        var titulo = anime.title_english || anime.title || "Título não informado";
-        var imagem = anime.images.jpg.large_image_url || anime.images.jpg.image_url;
+        var titulo = anime.titleEnglish || anime.title || "Título não informado";
+        var imagem = anime.images && anime.images.large
+            ? anime.images.large
+            : anime.imageUrl;
         var nota = anime.score ? anime.score.toFixed(2) : "N/A";
         var episodios = anime.episodes ? anime.episodes : "Não informado";
         var ano = anime.year ? anime.year : "Não informado";
@@ -189,7 +197,7 @@ async function carregarAnimeAleatorio() {
         }
 
         var json = await resposta.json();
-        abrirDetalhes(json.data.mal_id);
+        abrirDetalhes(json.data.malId);
     } catch (erro) {
         alert("Não foi possível buscar um anime aleatório agora.");
         console.error(erro);
